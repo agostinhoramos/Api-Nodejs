@@ -1,18 +1,16 @@
-const jwt = require("jsonwebtoken");
-
-module.exports = function(req, res, next){
-    const token = req.header("token");
-    if(!token){
-        return res.status(401).
-        json({message: "Auth Error"});
+const User = require('../models/userModels');
+module.exports = {
+  ensureAuthenticated: function (req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
     }
-
-    try{
-        const decoded = jwt.verify(token, "secret");
-        req.user = decoded.user;
-        next();
-    }catch(e){
-        console.error(e);
-        res.status(500).send({message:"Invalid Token!"})
+    req.flash('error_msg', 'Por favor cadastre para ver o conteúdo!');
+    res.redirect('/users/login');
+  },
+  forwardAuthenticated: function (req, res, next) {
+    if (!req.isAuthenticated()) {
+      return next();
     }
-}
+    res.redirect('/dashboard');
+  }
+};

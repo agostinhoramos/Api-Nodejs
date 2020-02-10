@@ -1,24 +1,63 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const user = require("./routes/userRoute")
-const InitiateMongoServer = require("./config/db");
-
-// init DB
-InitiateMongoServer();
+const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 
+// Passport Config
+require('./config/passport')(passport);
+
+// DB Config
+const db = require('./config/keys').mongoURI;
+
+// Connect to MongoDB
+mongoose
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log('MongoDB conectado com sucesso!'))
+  .catch(err => console.log(err));
+
+// EJS
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
+
+// Express body parser
+app.use(express.urlencoded({ extended: true }));
+
+// Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
+// Routes
+app.use('/', require('./routes/indexRoutes.js'));
+app.use('/users', require('./routes/usersRoutes.js'));
+app.use('/publish', require('./routes/publishRoutes.js'));
+
 const PORT = process.env.PORT || 4000;
 
-// Middleware
-app.use(bodyParser.json());
-
-app.get("/", (req, res) => {
-    res.json({ message: "API Working" });
-});
-
-app.use("/user", user);
-
-app.listen(PORT, (req, res) =>{
-    console.log("Please, visite this link: http://localhost:"+PORT);
-});
+app.listen(PORT, console.log(`Server started on port ${PORT}`));

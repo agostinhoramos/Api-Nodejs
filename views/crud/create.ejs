@@ -1,0 +1,23 @@
+<div class="card" style="width:100%;margin-top: 20px;">
+    <div class="card-body">
+      <h1 class="card-title" style="font-size:23px;">Criar Publicação:</h1>
+      <br />
+      <form action="/publish/create/" method="POST" >
+        <fieldset>
+          <div class="text-danger"></div>
+          <div class="form-group">
+            <label for="user_id">ID Utilizador</label>
+            <input id="user_id" value="<%- user._id %>" class="form-control" name="user_id" type="text" readonly>
+            <span class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label for="name">Nome</label>
+            <input id="name" class="form-control" name="name" type="text">
+            <span class="text-danger"></span>
+          </div>
+          <input class="btn btn-primary" type="submit" value="Criar">
+          <a href="/dashboard" class="btn btn-secondary text-light">Voltar</a>
+        </fieldset>
+      </form n>
+    </div>
+  </div>
