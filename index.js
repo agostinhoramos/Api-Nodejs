@@ -7,13 +7,13 @@ const session = require('express-session');
 
 const app = express();
 
-// Passport Config
+// configurar o Passport
 require('./config/passport')(passport);
 
-// DB Config
+// DB Configurar a Base de dados
 const db = require('./config/keys').mongoURI;
 
-// Connect to MongoDB
+// Conectar com o MongoDB
 mongoose
   .connect(
     db,
@@ -26,10 +26,10 @@ mongoose
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
-// Express body parser
+// Analisador de corpo Express
 app.use(express.urlencoded({ extended: true }));
 
-// Express session
+// Sessão Express
 app.use(
   session({
     secret: 'secret',
@@ -42,10 +42,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Connect flash
+// Conexão flash
 app.use(flash());
 
-// Global variables
+// Variáveis Globais
 app.use(function(req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');

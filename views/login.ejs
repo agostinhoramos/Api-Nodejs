@@ -23,7 +23,6 @@
             name="password"
             class="form-control"
             placeholder="Introduza a senha"
-            value="123456"
           />
         </div>
         <button type="submit" class="btn btn-primary btn-block">Entrar</button>
@@ -32,6 +31,8 @@
         Não tem uma conta? <a href="/users/register">Registar</a>
       </p>
     </div>
+
+    <!-- Criar uma lista de ulizadores existentes -->
     <datalist id="users_list">
       <% user.forEach(function(list) { %>
         <option value="<%= list.email %>" >

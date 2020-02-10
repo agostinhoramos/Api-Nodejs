@@ -3,13 +3,17 @@ const router = express.Router();
 
 // CRUD
 const controller = require('../app/controllers/publishControllers');
-// Create a new publ
+
+// Cria nova publicação
 router.post('/create/', controller.create);
-// Retrieve a single publ with id
+
+// Ver uma unica publicação pelo ID
 router.get('/retrieve/:id', controller.retrieve);
-// Update a publ with id
+
+// Atualizar uma publicação pelo ID
 router.post('/update/', controller.update);
-// Delete a publ with id
+
+// Apagar a publicação pelo ID
 router.get('/delete/:id', controller.delete);
 
 //Extra

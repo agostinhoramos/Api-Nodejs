@@ -1,4 +1,5 @@
 const User = require('../models/userModels');
+
 module.exports = {
   ensureAuthenticated: function (req, res, next) {
     if (req.isAuthenticated()) {

@@ -3,21 +3,21 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
-// Load User model
+// Carregar o modelo de utilizador
 const User = require('../models/userModels');
 const { forwardAuthenticated } = require('../config/auth');
 
-// Login Page
+// Pegar os conteúdos da autenticação login
 router.get('/login', forwardAuthenticated, (req, res) => {
   User.find()
   .then(function(doc){
-    res.render('login', {
+    res.render('login', { // Mostrar a página de Login
       user: doc
     });
   });
 });
 
-// Register Page
+// Pegar os conteúdos da autenticação registar
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 
 // Register
