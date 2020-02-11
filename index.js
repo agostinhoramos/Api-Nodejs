@@ -59,7 +59,6 @@ app.use('/', require('./routes/indexRoutes.js'));
 app.use('/users', require('./routes/usersRoutes.js'));
 app.use('/publish', require('./routes/publishRoutes.js'));
 
-// Isto foi alterado depois...
 
 const PORT = process.env.PORT || 4000;
 
