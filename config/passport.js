@@ -8,7 +8,7 @@ module.exports = function(passport) {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
       
-      // Tentativa de combinar os utilizadores
+      // Verificar se existe algum utilizador com o mesmo Email
       User.findOne({
         email: email
       }).then(user => {
@@ -17,7 +17,7 @@ module.exports = function(passport) {
         }
 
         // Tentativa de combinar os senhas
-        bcrypt.compare(password, user.password, (err, isMatch) => {
+        bcrypt.compare(password, user.password, (err, isMatch) => { // Esta função vai fazer um hash da senha que o utilizador introduzir
           if (err) throw err;
           if (isMatch) {
             return done(null, user);

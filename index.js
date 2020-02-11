@@ -12,12 +12,13 @@ require('./config/passport')(passport);
 
 // DB Configurar a Base de dados
 const db = require('./config/keys').mongoURI;
-
 // Conectar com o MongoDB
 mongoose
   .connect(
     db,
-    { useNewUrlParser: true }
+    { 
+      useNewUrlParser: true
+    }
   )
   .then(() => console.log('MongoDB conectado com sucesso!'))
   .catch(err => console.log(err));
@@ -60,4 +61,4 @@ app.use('/publish', require('./routes/publishRoutes.js'));
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+app.listen(PORT, console.log(`Para ver o conteudo da pagina visite http://localhost:${PORT}`));

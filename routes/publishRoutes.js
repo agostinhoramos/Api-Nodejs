@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // CRUD
-const controller = require('../app/controllers/publishControllers');
+const controller = require('../app/controllers/publishControllers'); // chamar todas as funções do comtroladores
 
 // Cria nova publicação
 router.post('/create/', controller.create);
@@ -10,7 +10,7 @@ router.post('/create/', controller.create);
 // Ver uma unica publicação pelo ID
 router.get('/retrieve/:id', controller.retrieve);
 
-// Atualizar uma publicação pelo ID
+// Atualizar uma publicação
 router.post('/update/', controller.update);
 
 // Apagar a publicação pelo ID

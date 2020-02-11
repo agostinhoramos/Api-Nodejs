@@ -1,80 +1,80 @@
 const Publish = require('../../models/publishModels');
 
-// Retrieve and return all publish from the database.
+//Retorna todas as publicações do banco de dados.
 exports.retrieveAll = (req, res) => {
-    Publish.find()
+    Publish.find() // instrução principal
     .then(publish => {
-        return publish;
+        return publish; // retorna em forma de Objecto
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Something went wrong while getting list of publish."
+            message: err.message || "Ocorreu um erro ao obter a lista de publicação."
         });
     });
 };
 
-// Create and Save a new publ
+// Criar e salvar nova publicação
 exports.create = (req, res) => {
-    if(req.isAuthenticated()){
+    if(req.isAuthenticated()){ // Verificar se o utilizador está autenticado
         // Validate request
         if(!req.body) {
             return res.status(400).send({
-                message: "Please fill all required field"
+                message: "Preencha todos os campos obrigatórios"
             });
         }
 
-        // Create a new Publish
+        // Toda publicação deve ter um nome e o ID do utilizador
         const publ = new Publish({
             name: req.body.name,
             user_id: req.body.user_id
         });
 
-        // Save publ in the database
+        // Salvar a publicação no banco de dados
         publ.save()
         .then(data => {
             res.send(data);
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Something went wrong while creating new publ."
+                message: err.message || "Ocorreu um erro ao criar uma nova publicação."
             });
         });
         res.redirect('/dashboard');
     }
 };
 
-// Find a single Publish with a id
+// Procurar uma unica publicação com o ID
 exports.retrieve = (req, res) => {
     Publish.findById(req.params.id)
     .then(publish => {
         if(!publish) {
             return res.status(404).send({
-                message: "Publish not found with id " + req.params.id
+                message: "Publicar não encontrado com o ID " + req.params.id
             });            
         }
         res.send(publ);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message: "Publish not found with id " + req.params.id
+                message: "Publicar não encontrado com o ID " + req.params.id
             });                
         }
         return res.status(500).send({
-            message: "Error getting publ with id " + req.params.id
+            message: "Erro ao obter a publicação com o ID " + req.params.id
         });
     });
 };
 
-// Update a publ identified by the id in the request
+// Atualizar a publicação pelo ID
 exports.update = (req, res) => {
     if(req.isAuthenticated()){
-        // Validate Request
+        // Verificar se existe valores na requisição
         
         if(!req.body) {
             return res.status(400).send({
-                message: "Please fill all required field"
+                message: "Preencha todos os campos obrigatórios"
             });
         }
 
-        // Find publ and update it with the request body
+        // passar os valores da requisição para as variaveis id, name.
         var id = req.body.id;
         var name = req.body.name;
 
@@ -86,68 +86,70 @@ exports.update = (req, res) => {
             last_edition_date : cdate
         } , {new: true}, function(err, model) {
             if(!err){
-                console.log('updated!!');
+                console.log('atualizado!!');
             }else{
-                console.log('Error');
+                console.log('Erro');
             }
         });
         res.redirect('/dashboard');
     }
 };
 
-// Delete a publ with the specified id in the request
+// Apagar uma unica publicação consultada pelo ID
 exports.delete = (req, res) => {
     if(req.isAuthenticated()){
-        Publish.findByIdAndRemove(req.params.id)
+        Publish.findByIdAndRemove(req.params.id) // esta intrução vai apagar a publicação que tiver este ID
         .then(publ => {
             if(!publ) {
                 return res.status(404).send({
-                    message: "publ not found with id " + req.params.id
+                    message: "Publicação não encontrado com o ID " + req.params.id
                 });
             }
-            res.send({message: "publ deleted successfully!"});
+            res.send({message: "Publicação apagada com sucessso!"});
         }).catch(err => {
             if(err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
-                    message: "publ not found with id " + req.params.id
+                    message: "Publicação não encontrada com ID " + req.params.id
                 });                
             }
             return res.status(500).send({
-                message: "Could not delete publ with id " + req.params.id
+                message: "Não foi possível apagar a publicação com ID " + req.params.id
             });
         });
-        res.redirect('/dashboard');
+        res.redirect('/dashboard'); // Redireciona para a pagina /dashboard se estiver autenticado!
     }else{
-        res.redirect('/login');
+        res.redirect('/login'); // Redireciona /login caso não esteja autenticado!
     }
 };
 
 
 // Extra...
+// Esta função vai receber os valores da requisição body para aumentar o feedback
 exports.like = (req, res) => {
     if(req.isAuthenticated()){
-        Publish.findByIdAndUpdate(req.body.id, {
-            feedback: parseInt(req.body.feedback) + 1
+        Publish.findByIdAndUpdate(req.body.id, { // identifica a publicação pelo ID
+            feedback: parseInt(req.body.feedback) + 1 // aumenta o feedback da publicação
         } , {new: true}, function(err, model) {
             if(!err){
-                console.log('liked!!');
+                console.log('Gosta!!');
             }else{
-                console.log('Error');
+                console.log('Erro');
             }
         });
         res.redirect('/dashboard');
     }
 };
 
+// Esta função vai receber os valores da requisição body para diminui o feedback
 exports.dislike = (req, res) => {
     if(req.isAuthenticated()){
-        Publish.findByIdAndUpdate(req.body.id, {
-            feedback: parseInt(req.body.feedback) - 1
+        Publish.findByIdAndUpdate(req.body.id, { // identifica a publicação pelo ID
+            feedback: parseInt(req.body.feedback) - 1 // diminui o feedback da publicação
         } , {new: true}, function(err, model) {
             if(!err){
-                console.log('disliked!!');
+                console.log('Não gostar!!');
             }else{
-                console.log('Error');
+                console.log('Erro');
             }
         });
         res.redirect('/dashboard');

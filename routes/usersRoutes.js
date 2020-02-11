@@ -20,7 +20,7 @@ router.get('/login', forwardAuthenticated, (req, res) => {
 // Pegar os conteúdos da autenticação registar
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 
-// Register
+// Metodo post da rota Register
 router.post('/register', (req, res) => {
   const { name, email, password, password2 } = req.body;
   let errors = [];
@@ -84,8 +84,8 @@ router.post('/register', (req, res) => {
   }
 });
 
-// Login
-router.post('/login', (req, res, next) => {
+// Metodo post da rota Login
+router.post('/login', (req, res, next) => { // 
   passport.authenticate('local', {
     successRedirect: '/dashboard',
     failureRedirect: '/users/login',
@@ -93,8 +93,8 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-// Logout
-router.get('/logout', (req, res, next) => {
+// Método get da rota Logout
+router.get('/logout', (req, res, next) => { //
   req.logout();
   req.flash('success_msg', 'Sessão terminada com sucesso');
   res.redirect('/users/login');

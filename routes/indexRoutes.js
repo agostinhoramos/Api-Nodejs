@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth'); // chamas as funções de autenticação
 const Publish = require('../models/publishModels');
 
-// Welcome Page
+// Visualizar a página <Welcome>
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
-// Dashboard - 
+// Visualizar a página <Dashboard>
 router.get('/dashboard', ensureAuthenticated, (req, res) =>{
   Publish.find()
     .then(function (doc) {
@@ -19,14 +19,14 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>{
 
 //CRUD
 
-// Create publ
+// Visualizar a página <create>
 router.get('/publish/crud/create/', ensureAuthenticated, (req, res) =>{
   res.render('crud/create',{
     user: req.user
   });
 });
 
-// Retrieve publ
+// Visualizar a página <retrieve> e também procurar todos os dados da publicação com este mesmo ID
 router.get('/publish/crud/retrieve/:id', ensureAuthenticated, (req, res) =>{
   Publish.findById(req.params.id)
       .then(function (doc) {
@@ -36,7 +36,7 @@ router.get('/publish/crud/retrieve/:id', ensureAuthenticated, (req, res) =>{
   });
 });
 
-// Update publ
+// Visualizar a página <update> e também procurar todos os dados da publicação com este mesmo ID
 router.get('/publish/crud/update/:id', ensureAuthenticated, (req, res) =>{
   Publish.findById(req.params.id)
       .then(function (doc) {
@@ -46,7 +46,7 @@ router.get('/publish/crud/update/:id', ensureAuthenticated, (req, res) =>{
   });
 });
 
-// Delete publ
+// Visualizar a página <delete> e também procurar todos os dados da publicação com este mesmo ID
 router.get('/publish/crud/delete/:id', ensureAuthenticated, (req, res) =>{
   Publish.findById(req.params.id)
       .then(function (doc) {
