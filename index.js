@@ -59,6 +59,8 @@ app.use('/', require('./routes/indexRoutes.js'));
 app.use('/users', require('./routes/usersRoutes.js'));
 app.use('/publish', require('./routes/publishRoutes.js'));
 
+// Isto foi alterado depois...
+
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, console.log(`Para ver o conteudo da pagina visite http://localhost:${PORT}`));
